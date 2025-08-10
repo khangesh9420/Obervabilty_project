@@ -8,7 +8,6 @@ type Skill = { id: number; name: string; category: string }
 type Experience = { id: number; role: string; company: string; location: string; dates: string; highlights: string }
 type Achievement = { id: number; description: string }
 type Education = { id: number; degree: string; institution: string; years: string }
-type Experience = { id: number; role: string; company: string; years: string }
 
 interface HomeProps {
   projects: Project[]
@@ -19,9 +18,6 @@ interface HomeProps {
 }
 
 export default function Home({ projects, skills, experience, achievements, education }: HomeProps) {
-}
-
-export default function Home({ projects, skills, experience }: HomeProps) {
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/telemetry/pageview`, {
       method: 'POST',
@@ -39,7 +35,6 @@ export default function Home({ projects, skills, experience }: HomeProps) {
       email: (form.elements.namedItem('email') as HTMLInputElement).value,
       subject: (form.elements.namedItem('subject') as HTMLInputElement).value,
       body: (form.elements.namedItem('body') as HTMLTextAreaElement).value
-      message: (form.elements.namedItem('message') as HTMLTextAreaElement).value
     }
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact`, {
       method: 'POST',
@@ -52,7 +47,9 @@ export default function Home({ projects, skills, experience }: HomeProps) {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      <Button onClick={() => document.documentElement.classList.toggle('dark')} className="absolute top-4 right-4">Toggle</Button>
+      <Button onClick={() => document.documentElement.classList.toggle('dark')} className="absolute top-4 right-4">
+        Toggle
+      </Button>
 
       <section className="h-screen flex flex-col items-center justify-center text-center">
         <motion.h1 className="text-4xl font-bold" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -65,10 +62,12 @@ export default function Home({ projects, skills, experience }: HomeProps) {
           <a href="mailto:khangesh@example.com" className="underline">Email</a>
         </div>
       </section>
+
       <section id="summary" className="p-8 bg-gray-100 dark:bg-gray-800">
         <h2 className="text-2xl mb-4">Summary</h2>
         <p>DevOps engineer with 3 years of experience in automation, CI/CD, Kubernetes and cloud security.</p>
       </section>
+
       <section id="skills" className="p-8">
         <h2 className="text-2xl mb-4">Skills</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -77,6 +76,7 @@ export default function Home({ projects, skills, experience }: HomeProps) {
           ))}
         </div>
       </section>
+
       <section id="experience" className="p-8 bg-gray-100 dark:bg-gray-800">
         <h2 className="text-2xl mb-4">Experience</h2>
         {experience.map(e => (
@@ -90,12 +90,8 @@ export default function Home({ projects, skills, experience }: HomeProps) {
             </ul>
           </div>
         ))}
-        <ul>
-          {experience.map(e => (
-            <li key={e.id} className="mb-2">{e.role} - {e.company} ({e.years})</li>
-          ))}
-        </ul>
       </section>
+
       <section id="projects" className="p-8">
         <h2 className="text-2xl mb-4">Projects</h2>
         <div className="grid md:grid-cols-3 gap-4">
@@ -108,6 +104,7 @@ export default function Home({ projects, skills, experience }: HomeProps) {
           ))}
         </div>
       </section>
+
       <section id="achievements" className="p-8 bg-gray-100 dark:bg-gray-800">
         <h2 className="text-2xl mb-4">Achievements</h2>
         <ul className="list-disc ml-4">
@@ -116,6 +113,7 @@ export default function Home({ projects, skills, experience }: HomeProps) {
           ))}
         </ul>
       </section>
+
       <section id="education" className="p-8">
         <h2 className="text-2xl mb-4">Education</h2>
         <ul>
@@ -124,20 +122,14 @@ export default function Home({ projects, skills, experience }: HomeProps) {
           ))}
         </ul>
       </section>
+
       <section id="contact" className="p-8 bg-gray-100 dark:bg-gray-800">
-          <li>Reduced deployment time by 40%</li>
-          <li>Boosted code quality with SonarQube & Black Duck</li>
-        </ul>
-      </section>
-      <section id="contact" className="p-8">
         <h2 className="text-2xl mb-4">Contact</h2>
         <form onSubmit={submit} className="flex flex-col max-w-md">
           <input name="name" placeholder="Name" className="mb-2 p-2 border rounded" required />
           <input name="email" type="email" placeholder="Email" className="mb-2 p-2 border rounded" required />
           <input name="subject" placeholder="Subject" className="mb-2 p-2 border rounded" required />
           <textarea name="body" placeholder="Message" className="mb-2 p-2 border rounded" required />
-          <textarea name="message" placeholder="Message" className="mb-2 p-2 border rounded" required />
-
           <Button type="submit">Send</Button>
         </form>
         {status && <p className="mt-2">{status}</p>}
