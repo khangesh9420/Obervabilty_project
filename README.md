@@ -5,7 +5,7 @@ A local-first microservices portfolio for **Khangesh Matte — DevOps Engineer**
 ## Services
 - **web-frontend**: Next.js + Tailwind + Framer Motion + shadcn/ui
 - **gateway**: FastAPI reverse proxy to backend services
-- **content-svc**: FastAPI service serving projects, skills and experience
+- **content-svc**: FastAPI service serving projects, skills, experience, achievements and education
 - **contact-svc**: FastAPI service storing contact form submissions
 - **telemetry-svc**: FastAPI service collecting page views
 - **postgres**: shared database seeded with portfolio data
@@ -21,6 +21,8 @@ Visit [http://localhost:3000](http://localhost:3000) to view the portfolio.
 - `GET /api/projects`
 - `GET /api/skills`
 - `GET /api/experience`
+- `GET /api/achievements`
+- `GET /api/education`
 - `POST /api/contact`
 - `POST /api/telemetry/pageview`
 

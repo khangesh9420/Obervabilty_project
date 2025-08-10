@@ -5,12 +5,20 @@ import { Button } from '../components/ui/button'
 
 type Project = { id: number; title: string; description: string; tech: string }
 type Skill = { id: number; name: string; category: string }
+type Experience = { id: number; role: string; company: string; location: string; dates: string; highlights: string }
+type Achievement = { id: number; description: string }
+type Education = { id: number; degree: string; institution: string; years: string }
 type Experience = { id: number; role: string; company: string; years: string }
 
 interface HomeProps {
   projects: Project[]
   skills: Skill[]
   experience: Experience[]
+  achievements: Achievement[]
+  education: Education[]
+}
+
+export default function Home({ projects, skills, experience, achievements, education }: HomeProps) {
 }
 
 export default function Home({ projects, skills, experience }: HomeProps) {
@@ -29,6 +37,8 @@ export default function Home({ projects, skills, experience }: HomeProps) {
     const data = {
       name: (form.elements.namedItem('name') as HTMLInputElement).value,
       email: (form.elements.namedItem('email') as HTMLInputElement).value,
+      subject: (form.elements.namedItem('subject') as HTMLInputElement).value,
+      body: (form.elements.namedItem('body') as HTMLTextAreaElement).value
       message: (form.elements.namedItem('message') as HTMLTextAreaElement).value
     }
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/contact`, {
@@ -43,11 +53,21 @@ export default function Home({ projects, skills, experience }: HomeProps) {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <Button onClick={() => document.documentElement.classList.toggle('dark')} className="absolute top-4 right-4">Toggle</Button>
-      <section className="h-screen flex flex-col items-center justify-center">
+
+      <section className="h-screen flex flex-col items-center justify-center text-center">
         <motion.h1 className="text-4xl font-bold" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           Khangesh Matte
         </motion.h1>
         <p className="mt-2">DevOps Engineer | Automation | Cloud | CI/CD</p>
+        <div className="mt-4 flex gap-4">
+          <a href="/cv.pdf"><Button>Download CV</Button></a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener" className="underline">LinkedIn</a>
+          <a href="mailto:khangesh@example.com" className="underline">Email</a>
+        </div>
+      </section>
+      <section id="summary" className="p-8 bg-gray-100 dark:bg-gray-800">
+        <h2 className="text-2xl mb-4">Summary</h2>
+        <p>DevOps engineer with 3 years of experience in automation, CI/CD, Kubernetes and cloud security.</p>
       </section>
       <section id="skills" className="p-8">
         <h2 className="text-2xl mb-4">Skills</h2>
@@ -59,6 +79,17 @@ export default function Home({ projects, skills, experience }: HomeProps) {
       </section>
       <section id="experience" className="p-8 bg-gray-100 dark:bg-gray-800">
         <h2 className="text-2xl mb-4">Experience</h2>
+        {experience.map(e => (
+          <div key={e.id} className="mb-4">
+            <h3 className="font-semibold">{e.role} - {e.company}</h3>
+            <p className="text-sm italic">{e.location} | {e.dates}</p>
+            <ul className="list-disc ml-4">
+              {e.highlights.split(';').map((h, i) => (
+                <li key={i}>{h}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
         <ul>
           {experience.map(e => (
             <li key={e.id} className="mb-2">{e.role} - {e.company} ({e.years})</li>
@@ -80,6 +111,20 @@ export default function Home({ projects, skills, experience }: HomeProps) {
       <section id="achievements" className="p-8 bg-gray-100 dark:bg-gray-800">
         <h2 className="text-2xl mb-4">Achievements</h2>
         <ul className="list-disc ml-4">
+          {achievements.map(a => (
+            <li key={a.id}>{a.description}</li>
+          ))}
+        </ul>
+      </section>
+      <section id="education" className="p-8">
+        <h2 className="text-2xl mb-4">Education</h2>
+        <ul>
+          {education.map(ed => (
+            <li key={ed.id} className="mb-2">{ed.degree} - {ed.institution} ({ed.years})</li>
+          ))}
+        </ul>
+      </section>
+      <section id="contact" className="p-8 bg-gray-100 dark:bg-gray-800">
           <li>Reduced deployment time by 40%</li>
           <li>Boosted code quality with SonarQube & Black Duck</li>
         </ul>
@@ -89,7 +134,10 @@ export default function Home({ projects, skills, experience }: HomeProps) {
         <form onSubmit={submit} className="flex flex-col max-w-md">
           <input name="name" placeholder="Name" className="mb-2 p-2 border rounded" required />
           <input name="email" type="email" placeholder="Email" className="mb-2 p-2 border rounded" required />
+          <input name="subject" placeholder="Subject" className="mb-2 p-2 border rounded" required />
+          <textarea name="body" placeholder="Message" className="mb-2 p-2 border rounded" required />
           <textarea name="message" placeholder="Message" className="mb-2 p-2 border rounded" required />
+
           <Button type="submit">Send</Button>
         </form>
         {status && <p className="mt-2">{status}</p>}
@@ -100,10 +148,12 @@ export default function Home({ projects, skills, experience }: HomeProps) {
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const base = process.env.API_BASE_URL || 'http://gateway:8080'
-  const [projects, skills, experience] = await Promise.all([
+  const [projects, skills, experience, achievements, education] = await Promise.all([
     fetch(`${base}/api/projects`).then(r => r.json()),
     fetch(`${base}/api/skills`).then(r => r.json()),
     fetch(`${base}/api/experience`).then(r => r.json()),
+    fetch(`${base}/api/achievements`).then(r => r.json()),
+    fetch(`${base}/api/education`).then(r => r.json()),
   ])
-  return { props: { projects, skills, experience } }
+  return { props: { projects, skills, experience, achievements, education } }
 }

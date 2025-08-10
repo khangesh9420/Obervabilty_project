@@ -30,6 +30,20 @@ class Experience(Base):
     id = Column(Integer, primary_key=True, index=True)
     role = Column(String)
     company = Column(String)
+    location = Column(String)
+    dates = Column(String)
+    highlights = Column(String)
+
+class Achievement(Base):
+    __tablename__ = 'achievements'
+    id = Column(Integer, primary_key=True, index=True)
+    description = Column(String)
+
+class Education(Base):
+    __tablename__ = 'education'
+    id = Column(Integer, primary_key=True, index=True)
+    degree = Column(String)
+    institution = Column(String)
     years = Column(String)
 
 app = FastAPI()
@@ -56,3 +70,11 @@ def get_skills(db: Session = Depends(get_db)):
 @app.get("/experience")
 def get_experience(db: Session = Depends(get_db)):
     return db.query(Experience).all()
+
+@app.get("/achievements")
+def get_achievements(db: Session = Depends(get_db)):
+    return db.query(Achievement).all()
+
+@app.get("/education")
+def get_education(db: Session = Depends(get_db)):
+    return db.query(Education).all()
