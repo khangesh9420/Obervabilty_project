@@ -1,0 +1,61 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+  content-svc:
+    build: ./services/content-svc
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - postgres
+  contact-svc:
+    build: ./services/contact-svc
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - postgres
+  telemetry-svc:
+    build: ./services/telemetry-svc
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - postgres
+  gateway:
+    build: ./apps/gateway
+    environment:
+      CONTENT_SVC_URL: http://content-svc:8000
+      CONTACT_SVC_URL: http://contact-svc:8000
+      TELEMETRY_SVC_URL: http://telemetry-svc:8000
+    ports:
+      - "8080:8080"
+    depends_on:
+      - content-svc
+      - contact-svc
+      - telemetry-svc
+  web-frontend:
+    build: ./apps/web-frontend
+    environment:
+      API_BASE_URL: http://gateway:8080
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+    ports:
+      - "3000:3000"
+    depends_on:
+      - gateway
+volumes:
+  pgdata:
