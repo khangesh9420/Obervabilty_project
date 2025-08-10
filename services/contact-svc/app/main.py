@@ -18,12 +18,14 @@ class Message(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     email = Column(String)
-    message = Column(String)
+    subject = Column(String)
+    body = Column(String)
 
 class MessageIn(BaseModel):
     name: str
     email: str
-    message: str
+    subject: str
+    body: str
 
 app = FastAPI()
 
@@ -40,7 +42,7 @@ def healthz():
 
 @app.post("/contact")
 def submit_contact(msg: MessageIn, db: Session = Depends(get_db)):
-    db_msg = Message(name=msg.name, email=msg.email, message=msg.message)
+    db_msg = Message(name=msg.name, email=msg.email, subject=msg.subject, body=msg.body)
     db.add(db_msg)
     db.commit()
     return {"status": "received"}

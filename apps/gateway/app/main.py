@@ -33,6 +33,14 @@ async def skills():
 async def experience():
     return await forward("GET", f"{CONTENT_URL}/experience", None)
 
+@app.get("/api/achievements")
+async def achievements():
+    return await forward("GET", f"{CONTENT_URL}/achievements", None)
+
+@app.get("/api/education")
+async def education():
+    return await forward("GET", f"{CONTENT_URL}/education", None)
+
 @app.post("/api/contact")
 async def contact(request: Request):
     return await forward("POST", f"{CONTACT_URL}/contact", request)
