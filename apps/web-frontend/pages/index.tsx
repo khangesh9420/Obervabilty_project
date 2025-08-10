@@ -47,10 +47,7 @@ export default function Home({ projects, skills, experience, achievements, educa
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      <Button onClick={() => document.documentElement.classList.toggle('dark')} className="absolute top-4 right-4">
-        Toggle
-      </Button>
-
+      <Button onClick={() => document.documentElement.classList.toggle('dark')} className="absolute top-4 right-4">Toggle</Button>
       <section className="h-screen flex flex-col items-center justify-center text-center">
         <motion.h1 className="text-4xl font-bold" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           Khangesh Matte
@@ -62,12 +59,10 @@ export default function Home({ projects, skills, experience, achievements, educa
           <a href="mailto:khangesh@example.com" className="underline">Email</a>
         </div>
       </section>
-
       <section id="summary" className="p-8 bg-gray-100 dark:bg-gray-800">
         <h2 className="text-2xl mb-4">Summary</h2>
         <p>DevOps engineer with 3 years of experience in automation, CI/CD, Kubernetes and cloud security.</p>
       </section>
-
       <section id="skills" className="p-8">
         <h2 className="text-2xl mb-4">Skills</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -76,7 +71,6 @@ export default function Home({ projects, skills, experience, achievements, educa
           ))}
         </div>
       </section>
-
       <section id="experience" className="p-8 bg-gray-100 dark:bg-gray-800">
         <h2 className="text-2xl mb-4">Experience</h2>
         {experience.map(e => (
@@ -91,7 +85,6 @@ export default function Home({ projects, skills, experience, achievements, educa
           </div>
         ))}
       </section>
-
       <section id="projects" className="p-8">
         <h2 className="text-2xl mb-4">Projects</h2>
         <div className="grid md:grid-cols-3 gap-4">
@@ -104,7 +97,6 @@ export default function Home({ projects, skills, experience, achievements, educa
           ))}
         </div>
       </section>
-
       <section id="achievements" className="p-8 bg-gray-100 dark:bg-gray-800">
         <h2 className="text-2xl mb-4">Achievements</h2>
         <ul className="list-disc ml-4">
@@ -113,7 +105,6 @@ export default function Home({ projects, skills, experience, achievements, educa
           ))}
         </ul>
       </section>
-
       <section id="education" className="p-8">
         <h2 className="text-2xl mb-4">Education</h2>
         <ul>
@@ -122,7 +113,6 @@ export default function Home({ projects, skills, experience, achievements, educa
           ))}
         </ul>
       </section>
-
       <section id="contact" className="p-8 bg-gray-100 dark:bg-gray-800">
         <h2 className="text-2xl mb-4">Contact</h2>
         <form onSubmit={submit} className="flex flex-col max-w-md">
