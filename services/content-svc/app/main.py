@@ -46,6 +46,9 @@ class Education(Base):
     institution = Column(String)
     years = Column(String)
 
+# Ensure tables are created if they do not yet exist.
+Base.metadata.create_all(bind=engine)
+
 app = FastAPI()
 
 def get_db():
