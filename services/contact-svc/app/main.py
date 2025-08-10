@@ -20,12 +20,14 @@ class Message(Base):
     email = Column(String)
     subject = Column(String)
     body = Column(String)
+    message = Column(String)
 
 class MessageIn(BaseModel):
     name: str
     email: str
     subject: str
     body: str
+    message: str
 
 app = FastAPI()
 

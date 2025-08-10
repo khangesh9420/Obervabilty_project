@@ -38,6 +38,7 @@ CREATE TABLE messages (
   email TEXT NOT NULL,
   subject TEXT NOT NULL,
   body TEXT NOT NULL,
+
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -82,3 +83,4 @@ INSERT INTO achievements (description) VALUES
 INSERT INTO education (degree, institution, years) VALUES
 ('M.S. in Embedded Systems', 'Hamburg University of Technology', '2019-2021'),
 ('B.E. in Electronics', 'Savitribai Phule Pune University', '2013-2017');
+
