@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, Integer, String, text
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
 import os
 
@@ -46,8 +46,16 @@ class Education(Base):
     institution = Column(String)
     years = Column(String)
 
-# Ensure tables are created if they do not yet exist.
+# Ensure tables are created if they do not yet exist and make sure
+# the experience table has the expected schema even if the database
+# was initialised without the ``location`` column.
 Base.metadata.create_all(bind=engine)
+with engine.begin() as conn:
+    conn.execute(
+        text(
+            "ALTER TABLE experience ADD COLUMN IF NOT EXISTS location TEXT NOT NULL DEFAULT ''"
+        )
+    )
 
 app = FastAPI()
 
