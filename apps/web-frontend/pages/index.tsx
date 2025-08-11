@@ -5,7 +5,7 @@ import { Button } from '../components/ui/button'
 
 type Project = { id: number; title: string; description: string; tech: string }
 type Skill = { id: number; name: string; category: string }
-type Experience = { id: number; role: string; company: string; location: string; dates: string; highlights: string }
+type Experience = { id: number; role: string; company: string; location: string; dates: string; highlights: string | null }
 type Achievement = { id: number; description: string }
 type Education = { id: number; degree: string; institution: string; years: string }
 
@@ -78,7 +78,7 @@ export default function Home({ projects, skills, experience, achievements, educa
             <h3 className="font-semibold">{e.role} - {e.company}</h3>
             <p className="text-sm italic">{e.location} | {e.dates}</p>
             <ul className="list-disc ml-4">
-              {e.highlights.split(';').map((h, i) => (
+              {(e.highlights?.split(';') || []).map((h, i) => (
                 <li key={i}>{h}</li>
               ))}
             </ul>
