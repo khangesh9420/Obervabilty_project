@@ -2,6 +2,7 @@ import { GetServerSideProps } from 'next'
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Button } from '../components/ui/button'
+import { profile } from '../data/profile'
 
 type Project = { id: number; title: string; description: string; tech: string }
 type Skill = { id: number; name: string; category: string }
@@ -48,11 +49,14 @@ export default function Home({ projects, skills, experience, achievements, educa
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <Button onClick={() => document.documentElement.classList.toggle('dark')} className="absolute top-4 right-4">Toggle</Button>
-      <section className="h-screen flex flex-col items-center justify-center text-center">
+      <section
+        className="relative flex flex-col items-center justify-center text-center py-20 bg-cover bg-center"
+        style={{ backgroundImage: "url('/devops-bg.svg')" }}
+      >
         <motion.h1 className="text-4xl font-bold" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          Khangesh Matte
+          {profile.name}
         </motion.h1>
-        <p className="mt-2">DevOps Engineer | Automation | Cloud | CI/CD</p>
+        <p className="mt-2">{profile.title}</p>
         <div className="mt-4 flex gap-4">
           <a href="/cv.pdf"><Button>Download CV</Button></a>
           <a href="https://www.linkedin.com" target="_blank" rel="noopener" className="underline">LinkedIn</a>
@@ -61,7 +65,7 @@ export default function Home({ projects, skills, experience, achievements, educa
       </section>
       <section id="summary" className="p-8 bg-gray-100 dark:bg-gray-800">
         <h2 className="text-2xl mb-4">Summary</h2>
-        <p>DevOps engineer with 3 years of experience in automation, CI/CD, Kubernetes and cloud security.</p>
+        <p>{profile.summary}</p>
       </section>
       <section id="skills" className="p-8">
         <h2 className="text-2xl mb-4">Skills</h2>
