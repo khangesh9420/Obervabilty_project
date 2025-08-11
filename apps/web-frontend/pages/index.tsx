@@ -27,6 +27,10 @@ export default function Home({ projects, skills, experience, achievements, educa
   }, [])
 
   const [status, setStatus] = useState<string | null>(null)
+  const [summary, setSummary] = useState(
+    'DevOps engineer with 3 years of experience in automation, CI/CD, Kubernetes and cloud security.'
+  )
+  const [editingSummary, setEditingSummary] = useState(false)
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const form = e.currentTarget
@@ -48,20 +52,65 @@ export default function Home({ projects, skills, experience, achievements, educa
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
       <Button onClick={() => document.documentElement.classList.toggle('dark')} className="absolute top-4 right-4">Toggle</Button>
-      <section className="h-screen flex flex-col items-center justify-center text-center">
-        <motion.h1 className="text-4xl font-bold" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          Khangesh Matte
+      <section
+        className="h-screen flex flex-col items-center justify-center text-center bg-cover bg-center"
+        style={{ backgroundImage: "url('/devops-bg.svg')" }}
+      >
+        <motion.h1
+          className="text-4xl font-bold bg-black/50 px-4 py-2 rounded"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          Khangesh Matte - DevOps Engineer
         </motion.h1>
-        <p className="mt-2">DevOps Engineer | Automation | Cloud | CI/CD</p>
+        <p className="mt-2 bg-black/50 px-4 py-1 rounded">Automation | Cloud | CI/CD</p>
         <div className="mt-4 flex gap-4">
-          <a href="/cv.pdf"><Button>Download CV</Button></a>
-          <a href="https://www.linkedin.com" target="_blank" rel="noopener" className="underline">LinkedIn</a>
-          <a href="mailto:khangesh@example.com" className="underline">Email</a>
+          <a href="/cv.pdf" target="_blank" rel="noopener">
+            <Button>View CV</Button>
+          </a>
+          <a href="https://www.linkedin.com" target="_blank" rel="noopener" className="underline">
+            LinkedIn
+          </a>
+          <a href="mailto:khangesh@example.com" className="underline">
+            Email
+          </a>
         </div>
       </section>
       <section id="summary" className="p-8 bg-gray-100 dark:bg-gray-800">
         <h2 className="text-2xl mb-4">Summary</h2>
-        <p>DevOps engineer with 3 years of experience in automation, CI/CD, Kubernetes and cloud security.</p>
+        {editingSummary ? (
+          <form
+            onSubmit={e => {
+              e.preventDefault()
+              setEditingSummary(false)
+            }}
+            className="flex flex-col gap-2"
+          >
+            <textarea
+              className="p-2 border rounded bg-white text-gray-900"
+              value={summary}
+              onChange={e => setSummary(e.target.value)}
+              rows={4}
+            />
+            <div className="flex gap-2">
+              <Button type="submit">Save</Button>
+              <Button
+                type="button"
+                className="bg-gray-500 hover:bg-gray-600"
+                onClick={() => setEditingSummary(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+          </form>
+        ) : (
+          <>
+            <p>{summary}</p>
+            <Button className="mt-2" onClick={() => setEditingSummary(true)}>
+              Edit
+            </Button>
+          </>
+        )}
       </section>
       <section id="skills" className="p-8">
         <h2 className="text-2xl mb-4">Skills</h2>
